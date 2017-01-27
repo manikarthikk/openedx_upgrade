@@ -88,7 +88,6 @@ def writeToFile(filename, d, label):
 # it should take the full path of the filename
 # check for main and help should be included..
 processLog('upgrade.log')
-os.system('bash sqlmigrate_lms.sh')
-os.system('bash sqlmigrate_cms.sh')
+os.system('bash run_sqlmigrate.sh')
 
 
