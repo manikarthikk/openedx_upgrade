@@ -23,7 +23,7 @@ def processLog(fileName):
         processLine(lmsDict, line, "LMS")
       elif ctr == 2:  #process as CMS  
         processLine(cmsDict,line, "CMS")
-      
+  processLine(lmsDict,"Applying tagging.0001_initial... OK","LMS")    
   #compare the two sets, remove duplicates from CMS before processing 
   if len(lmsDict) > 0 and len(cmsDict) > 0 :  #at least one entry should be there in both dicts
     dupDict = compareDict(lmsDict, cmsDict)
