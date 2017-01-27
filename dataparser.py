@@ -1,47 +1,36 @@
-from collections import OrderedDict
+import os
 import re
 from subprocess import call
 import sys, getopt
-import os 
+from collections import OrderedDict
 
-# search pattern
+
 pattern = r'Applying (.\w*).(.*?)... OK'
 SEPARATOR = "."
 
 def processLog(fileName):
   ctr = 0
-  lmsDict = OrderedDict()
-  cmsDict = OrderedDict()
+  migration_Dict = OrderedDict()
 
   with open(fileName, 'r') as searchfile:
     for line in searchfile:
-      # print(line)
       if line.find("Running deferred SQL") > 0 : # if the line contains Running deferred SQL tag it
         ctr = ctr + 1
 
-      if ctr == 1:    #process as LMS
-        processLine(lmsDict, line, "LMS")
-      elif ctr == 2:  #process as CMS  
-        processLine(cmsDict,line, "CMS")
-  processLine(lmsDict,"Applying tagging.0001_initial... OK","LMS")    
-  #compare the two sets, remove duplicates from CMS before processing 
-  if len(lmsDict) > 0 and len(cmsDict) > 0 :  #at least one entry should be there in both dicts
-    dupDict = compareDict(lmsDict, cmsDict)
+      if ctr == 1:    # process required migrations
+        processLine(migration_Dict, line, "LMS")
+      elif ctr == 2:  # ignore repeating migrations
+        pass
 
-  #now print the summary of each dictionary      
-  printSummary(lmsDict, "LMS")
-  printSummary(cmsDict, "CMS")
-  printSummary(dupDict, "Duplicates")
 
-  writeToFile("lms_upgrade.log", lmsDict, "LMS")
-  writeToFile("cms_upgrade.log", cmsDict, "CMS")
-  writeToFile("duplicates.log", dupDict, "Duplicates")
+  printSummary(migration_Dict, "LMS")
+  writeToFile("lms_upgrade.log", migration_Dict, "LMS")
 
-# takes 2 parameters line and dictionary
+
 def processLine(d, line, label):
   pattern = r'Applying (.\w*).(.*?)... OK'
-  #print("processLine:", label, line)
-  if "Applying" in line: 
+
+  if "Applying" in line:
     searchObj = re.search(pattern, line, re.M|re.I)
     if (searchObj):
         appName = searchObj.group(1)    #example - api_admin
@@ -52,26 +41,16 @@ def processLine(d, line, label):
         # the key is unique in the dictionary
         # key + value = file example api_admin.002_auto_20160325_1604
         # ideally I want this to be an object later on (class)
-        key = appName + SEPARATOR + migrationNumber #example - api_admin.0001 
+        key = appName + SEPARATOR + migrationNumber #example - api_admin.0001
         # print(key)
         value = description        #example - api_admin.0002_auto_20160325_1604
         # print(key+ SEPARATOR + value)
         d[key] = value
 
-# for each entry in lmsDict check if it exists in cmsDict
-# if it is there remove it from cmsDict
-def compareDict(lmsDict, cmsDict):
-  duplicates = OrderedDict()
-  for key, value in lmsDict.items():
-    if key in cmsDict:
-      duplicates[key] = value
-      del cmsDict[key]
-  return duplicates
-
 #function to print the summary
 def printSummary(d, label):
-  print("=========="+ label + "==========")
-  s = 'Total number of migrations of {} = {}'.format(label, len(d))
+  print("****************************")
+  s = 'Total number of migrations = {}'.format(len(d))
   print(s)
   printDetails(d)
 
@@ -94,8 +73,8 @@ def parseKey(key):
   return appName, migrationNumber
 
 #function to write contents to file
-#by default the file is written in text mode 
-#if the file is 
+#by default the file is written in text mode
+#if the file is
 def writeToFile(filename, d, label):
   if filename is None:
     filename = label + ".sql"
@@ -111,8 +90,5 @@ def writeToFile(filename, d, label):
 processLog('upgrade.log')
 os.system('bash sqlmigrate_lms.sh')
 os.system('bash sqlmigrate_cms.sh')
-
-#call(["bash", "sqlmigrate_lms.sh"]) && call(["bash", "sqlmigrate_cms.sh"])
-
 
 
