@@ -1,0 +1,275 @@
+admin
+ [X] 0001_initial
+api_admin
+ [X] 0001_initial
+ [X] 0002_auto_20160325_1604
+ [X] 0003_auto_20160404_1618
+ [X] 0004_auto_20160412_1506
+ [X] 0005_auto_20160414_1232
+ [X] 0006_catalog
+assessment
+ [X] 0001_initial
+ [X] 0002_staffworkflow
+auth
+ [X] 0001_initial
+ [X] 0002_alter_permission_name_max_length
+ [X] 0003_alter_user_email_max_length
+ [X] 0004_alter_user_username_opts
+ [X] 0005_alter_user_last_login_null
+ [X] 0006_require_contenttypes_0002
+badges
+ [X] 0001_initial
+ [X] 0002_data__migrate_assertions
+ [X] 0003_schema__add_event_configuration
+bookmarks
+ [X] 0001_initial
+branding
+ [X] 0001_initial
+bulk_email
+ [X] 0001_initial
+ [X] 0002_data__load_course_email_template
+ [X] 0003_config_model_feature_flag
+ [X] 0004_add_email_targets
+ [X] 0005_move_target_data
+catalog
+ [X] 0001_initial
+ [X] 0002_catalogintegration_username
+certificates
+ [X] 0001_initial
+ [X] 0002_data__certificatehtmlviewconfiguration_data
+ [X] 0003_data__default_modes
+ [X] 0004_certificategenerationhistory
+ [X] 0005_auto_20151208_0801
+ [X] 0006_certificatetemplateasset_asset_slug
+ [X] 0007_certificateinvalidation
+ [X] 0008_schema__remove_badges
+commerce
+ [X] 0001_data__add_ecommerce_service_user
+ [X] 0002_commerceconfiguration
+ [X] 0003_auto_20160329_0709
+ [X] 0004_auto_20160531_0950
+contentserver
+ [X] 0001_initial
+ [X] 0002_cdnuseragentsconfig
+contenttypes
+ [X] 0001_initial
+ [X] 0002_remove_content_type_name
+cors_csrf
+ [X] 0001_initial
+course_action_state
+ [X] 0001_initial
+course_groups
+ [X] 0001_initial
+course_modes
+ [X] 0001_initial
+ [X] 0002_coursemode_expiration_datetime_is_explicit
+ [X] 0003_auto_20151113_1443
+ [X] 0004_auto_20151113_1457
+ [X] 0005_auto_20151217_0958
+ [X] 0006_auto_20160208_1407
+ [X] 0007_coursemode_bulk_sku
+course_overviews
+ [X] 0001_initial
+ [X] 0002_add_course_catalog_fields
+ [X] 0003_courseoverviewgeneratedhistory
+ [X] 0004_courseoverview_org
+ [X] 0005_delete_courseoverviewgeneratedhistory
+ [X] 0006_courseoverviewimageset
+ [X] 0007_courseoverviewimageconfig
+ [X] 0008_remove_courseoverview_facebook_url
+ [X] 0009_readd_facebook_url
+ [X] 0010_auto_20160329_2317
+course_structures
+ [X] 0001_initial
+coursetalk
+ [X] 0001_initial
+ [X] 0002_auto_20160325_0631
+courseware
+ [X] 0001_initial
+credentials
+ [X] 0001_initial
+ [X] 0002_auto_20160325_0631
+credit
+ [X] 0001_initial
+ [X] 0002_creditconfig
+ [X] 0003_auto_20160511_2227
+dark_lang
+ [X] 0001_initial
+ [X] 0002_data__enable_on_install
+database_fixups
+ [X] 0001_initial
+default
+ [X] 0001_initial
+ [X] 0002_add_related_name
+ [X] 0003_alter_email_max_length
+django_comment_client
+ (no migrations)
+django_comment_common
+ [X] 0001_initial
+ [X] 0002_forumsconfig
+ [X] 0003_enable_forums
+ [X] 0004_auto_20161117_1209
+django_notify
+ [X] 0001_initial
+django_openid_auth
+ [X] 0001_initial
+djcelery
+ (no migrations)
+edx_oauth2_provider
+ [X] 0001_initial
+edx_proctoring
+ [X] 0001_initial
+ [X] 0002_proctoredexamstudentattempt_is_status_acknowledged
+ [X] 0003_auto_20160101_0525
+ [X] 0004_auto_20160201_0523
+ [X] 0005_proctoredexam_hide_after_due
+edxval
+ [X] 0001_initial
+ [X] 0002_data__default_profiles
+ [X] 0003_coursevideo_is_hidden
+email_marketing
+ [X] 0001_initial
+ [X] 0002_auto_20160623_1656
+ [X] 0003_auto_20160715_1145
+embargo
+ [X] 0001_initial
+ [X] 0002_data__add_countries
+enterprise
+ [X] 0001_initial
+ [X] 0002_enterprisecustomerbrandingconfiguration
+ [X] 0003_auto_20161104_0937
+ [X] 0004_auto_20161114_0434
+ [X] 0005_pendingenterprisecustomeruser
+ [X] 0006_auto_20161121_0241
+ [X] 0007_auto_20161109_1511
+ [X] 0008_auto_20161124_2355
+ [X] 0009_auto_20161130_1651
+external_auth
+ [X] 0001_initial
+grades
+ [X] 0001_initial
+ [X] 0002_rename_last_edited_field
+ [X] 0003_coursepersistentgradesflag_persistentgradesenabledflag
+ [X] 0004_visibleblocks_course_id
+ [X] 0005_multiple_course_flags
+ [X] 0006_persistent_course_grades
+ [X] 0007_add_passed_timestamp_column
+ [X] 0008_persistentsubsectiongrade_first_attempted
+ [ ] 0009_auto_20170111_1507
+ [ ] 0010_auto_20170112_1156
+instructor_task
+ [X] 0001_initial
+lms_xblock
+ [X] 0001_initial
+microsite_configuration
+ [X] 0001_initial
+ [X] 0002_auto_20160202_0228
+milestones
+ [X] 0001_initial
+ [X] 0002_data__seed_relationship_types
+ [X] 0003_coursecontentmilestone_requirements
+ [X] 0004_auto_20151221_1445
+mobile_api
+ [X] 0001_initial
+ [X] 0002_auto_20160406_0904
+notes
+ [X] 0001_initial
+oauth2
+ [X] 0001_initial
+ [X] 0002_auto_20160404_0813
+ [X] 0003_client_logout_uri
+ [X] 0004_add_index_on_grant_expires
+oauth2_provider
+ [X] 0001_initial
+ [X] 0002_08_updates
+oauth_dispatch
+ [X] 0001_initial
+oauth_provider
+ [X] 0001_initial
+organizations
+ [X] 0001_initial
+programs
+ [X] 0001_initial
+ [X] 0002_programsapiconfig_cache_ttl
+ [X] 0003_auto_20151120_1613
+ [X] 0004_programsapiconfig_enable_certification
+ [X] 0005_programsapiconfig_max_retries
+ [X] 0006_programsapiconfig_xseries_ad_enabled
+ [X] 0007_programsapiconfig_program_listing_enabled
+ [X] 0008_programsapiconfig_program_details_enabled
+ [X] 0009_programsapiconfig_marketing_path
+redirects
+ [X] 0001_initial
+rss_proxy
+ [X] 0001_initial
+self_paced
+ [X] 0001_initial
+sessions
+ [X] 0001_initial
+shoppingcart
+ [X] 0001_initial
+ [X] 0002_auto_20151208_1034
+ [X] 0003_auto_20151217_0958
+site_configuration
+ [X] 0001_initial
+ [X] 0002_auto_20160720_0231
+sites
+ [X] 0001_initial
+splash
+ [X] 0001_initial
+static_replace
+ [X] 0001_initial
+ [X] 0002_assetexcludedextensionsconfig
+status
+ [X] 0001_initial
+student
+ [X] 0001_initial
+ [X] 0002_auto_20151208_1034
+ [X] 0003_auto_20160516_0938
+ [X] 0004_auto_20160531_1422
+ [X] 0005_auto_20160531_1653
+ [X] 0006_logoutviewconfiguration
+ [X] 0007_registrationcookieconfiguration
+ [X] 0008_auto_20161117_1209
+ [ ] 0009_auto_20170801_1239
+submissions
+ [X] 0001_initial
+ [X] 0002_auto_20151119_0913
+ [X] 0003_submission_status
+survey
+ [X] 0001_initial
+teams
+ [X] 0001_initial
+theming
+ [X] 0001_initial
+third_party_auth
+ [X] 0001_initial
+ [X] 0002_schema__provider_icon_image
+ [X] 0003_samlproviderconfig_debug_mode
+ [X] 0004_add_visible_field
+ [X] 0005_add_site_field
+track
+ [X] 0001_initial
+user_api
+ [X] 0001_initial
+util
+ [X] 0001_initial
+ [X] 0002_data__default_rate_limit_config
+verified_track_content
+ [X] 0001_initial
+ [X] 0002_verifiedtrackcohortedcourse_verified_cohort_name
+verify_student
+ [X] 0001_initial
+ [X] 0002_auto_20151124_1024
+ [X] 0003_auto_20151113_1443
+wiki
+ [X] 0001_initial
+ [X] 0002_remove_article_subscription
+ [X] 0003_ip_address_conv
+ [X] 0004_increase_slug_size
+workflow
+ [X] 0001_initial
+xblock_django
+ [X] 0001_initial
+ [X] 0002_auto_20160204_0809
+ [X] 0003_add_new_config_models
