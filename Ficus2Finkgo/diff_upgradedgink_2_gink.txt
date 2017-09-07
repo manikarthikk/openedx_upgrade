@@ -1,0 +1,72 @@
++--------------------------------------------+
+| Catalog Diff Report                        |
++--------------------------------------------+
+Table `edxapp`.`xblock_django_xblockdisableconfig` was dropped
+Table `edxapp`.`coursetalk_coursetalkwidgetconfiguration` was dropped
+Table `edxapp`.`xblock_config_courseeditltifieldsenabledflag` was created
+  columns:
+  - id of type INT
+  - change_date of type DATETIME
+  - enabled of type TINYINT
+  - course_id of type VARCHAR
+  - changed_by_id of type INT
+  __
+  indices:
+  - PRIMARY with columns: id
+  - xblock_config_cou_changed_by_id_124d91bd160908dd_fk_auth_user_id with columns: changed_by_id
+  - xblock_config_courseeditltifieldsenabledflag_ea134da7 with columns: course_id
+  __
+  foreign keys:
+  - xblock_config_cou_changed_by_id_124d91bd160908dd_fk_auth_user_id with columns: changed_by_id, referred table: auth_user with columns: id
+    - action on update: none
+    - action on delete: none
+  __
+  attributes:
+  - engine: InnoDB
+  - default character set: utf8
+  - default collate: utf8_general_ci
+  __
+Table `edxapp`.`auth_user` was modified
+  indices:
+  - removed index email_2
+  __
+Table `edxapp`.`djcelery_periodictask` was modified
+  columns:
+  - modified column crontab_id
+  - modified column interval_id
+  __
+Table `edxapp`.`djcelery_taskstate` was modified
+  columns:
+  - modified column hidden
+  __
+  indices:
+  - removed index djcelery_t_worker_id_30050731b1c3d3d9_fk_djcelery_workerstate_id
+  __
+Table `edxapp`.`grades_persistentcoursegrade` was modified
+  indices:
+  - added index grades_persistentcoursegrade_modified_33ed872ee90d4a03_idx with columns: modified, course_id
+  __
+Table `edxapp`.`grades_persistentsubsectiongrade` was modified
+  indices:
+  - added index grades_persistentsubsectiongrade_modified_63b103f5651501c8_idx with columns: modified, course_id, usage_key
+  - added index grades_persistentsubsectiong_first_attempted_96c2c1175370fed_idx with columns: first_attempted, course_id, user_id
+  __
+Table `edxapp`.`sap_success_factors_catalogtransmissionaudit` was modified
+  columns:
+  - added column created of type DATETIME
+  - added column modified of type DATETIME
+  __
+Table `edxapp`.`sap_success_factors_historicalsapsuccessfactorsenterprisecus80ad` was modified
+  columns:
+  - added column sapsf_company_id of type VARCHAR(255)
+  - added column sapsf_user_id of type VARCHAR(255)
+  - added column user_type of type VARCHAR(20)
+  __
+Table `edxapp`.`sap_success_factors_sapsuccessfactorsenterprisecustomerconfidb8a` was modified
+  columns:
+  - added column sapsf_company_id of type VARCHAR(255)
+  - added column sapsf_user_id of type VARCHAR(255)
+  - added column user_type of type VARCHAR(20)
+  __
+----------------------------------------------
+End of MySQL Workbench Report
