@@ -44,11 +44,11 @@ class Ldintegration(object):
 
         Get OAuth2 access  token for REST API call
 
-        :param resourse_url:
-        :param headers:
-        :param url:
-        :param data:
-        :return: access_token
+        :param resourse_url: principal resource url. Example: 'https://vault.azure.net'
+        :param headers: required headers for the service url
+        :param url: this was the request url. By defalt 'http://localhost:50342/oauth2/token' in MSI implementation
+        :param data: Meta data for the servie
+        :return: returns the access_token
 
         """
 
@@ -65,11 +65,12 @@ class Ldintegration(object):
     def get_access_token_ld(self, ldauthorityhosturl, ldtenant, ldresource, ldclientid, ldclientSecret):
         """
 
-        :param ldtenant:
-        :param ldresource:
-        :param ldclientid:
-        :param ldclientSecret:
+        :param ldtenant: tenant id of the AAD application
+        :param ldresource: L&D resource url
+        :param ldclientid: client id of the AAD application
+        :param ldclientSecret: client secret provided by L&D
         :return: access token
+
         """
         authority_url = (ldauthorityhosturl + '/' + ldtenant)
         context = adal.AuthenticationContext(
@@ -87,11 +88,11 @@ class Ldintegration(object):
         """
 
         Get value of a key from Azure Key-vault
-        :param access_token:
-        :param keyvault_url:
-        :param key_name:
-        :param api_version:
-        :return: secret value
+        :param access_token: access_token obtained from azure AD tenant
+        :param keyvault_url: url of the key_vault
+        :param key_name: name of the key_vault
+        :param api_version: GRAPH api version for the key_vault
+        :return: secret value for the provided key
 
         """
 
@@ -100,7 +101,7 @@ class Ldintegration(object):
         response = requests.get(request_url, headers=headers_credentilas).json()
         return response['value']
 
-    def call_api_data(request_url,headers):
+    def get_api_data(request_url,headers):
         """
 
         :param request_url:
@@ -117,7 +118,7 @@ class Ldintegration(object):
         except requests.exceptions.RequestException as e:
             self.log(e, "debug")
 
-    def grades_api_data(request_url,headers=None,time_loging=None):
+    def get_course_catalog_data(request_url,headers=None,time_loging=None):
         """
 
         :param request_url:
@@ -126,11 +127,10 @@ class Ldintegration(object):
         :return: total api data
 
         """
-        user_data = self.call_api_data(request_url,headers)
+        user_data = self.get_api_data(request_url,headers)
         req_api_data = user_data['results']
         while user_data['pagination']['next']:
-            print("in WHILE LOOP")
-            user_data = self.call_api_data(user_data['pagination']['next'],headers)
+            user_data = self.get_api_data(user_data['pagination']['next'],headers)
             #print(user_data)
             req_api_data = req_api_data + user_data['results']
         return req_api_data
