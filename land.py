@@ -1,8 +1,6 @@
 """
 A collection of functions related to Open edX Integration with L&D
 """
-
-import json
 from datetime import datetime, timedelta
 
 import requests
@@ -21,8 +19,8 @@ class LdIntegration(object):
         Log a message
 
         :param message: the message to log
-        :param message_type: the type of log message (info, warning or debug). If a message is not info or warning, it
-        falls back to debug
+        :param message_type: the type of log message (info, warning or debug).
+                             If a message is not info or warning, it falls back to debug
 
         """
 
@@ -108,6 +106,7 @@ class LdIntegration(object):
         return response['value']
 
     def get_api_data(self, request_url, headers=None):
+        
         """
 
         :param request_url: api url to get the data
@@ -116,7 +115,7 @@ class LdIntegration(object):
 
         """
         try:
-            return requests.get(request_url,headers=headers, verify=False,timeout=1).json()
+            return requests.get(request_url, headers=headers, verify=False, timeout=1).json()
         except requests.exceptions.Timeout as e:
             self.log(e, "debug")
         except requests.exceptions.ConnectionError as e:
@@ -132,9 +131,9 @@ class LdIntegration(object):
         :return: return the results including the paginated data
 
         """
-        user_data = self.get_api_data(request_url,headers)
+        user_data = self.get_api_data(request_url, headers)
         req_api_data = user_data['results']
         while user_data['pagination']['next']:
-            user_data = self.get_api_data(user_data['pagination']['next'],headers)
+            user_data = self.get_api_data(user_data['pagination']['next'], headers)
             req_api_data = req_api_data + user_data['results']
         return req_api_data
