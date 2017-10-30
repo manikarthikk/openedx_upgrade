@@ -44,6 +44,12 @@ class Ldintegration(object):
 
         Get OAuth2 access  token for REST API call
 
+        :param resourse_url:
+        :param headers:
+        :param url:
+        :param data:
+        :return: access_token
+
         """
 
         #resource = 'https://vault.azure.net'
