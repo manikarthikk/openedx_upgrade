@@ -8,12 +8,19 @@ import adal
 
 
 class LdIntegration(object):
-    def __init__(self, logger=None):
+    def __init__(
+            self,
+            logger=None
+    ):
 
         # get reference to the user-specified python logger that has already been initialized
         self.logger = logger
 
-    def log(self, message, message_type="info"):
+    def log(
+            self,
+            message,
+            message_type="info"
+    ):
 
         """
         Log a message
@@ -34,7 +41,12 @@ class LdIntegration(object):
             else:
                 self.logger.debug(message)
 
-    def get_access_token(self, resource, url, headers):
+    def get_access_token(
+            self,
+            resource,
+            url,
+            headers
+    ):
 
         """
 
@@ -49,30 +61,32 @@ class LdIntegration(object):
 
         """
 
-        #resource = 'https://vault.azure.net'
-        #url = 'http://localhost:50342/oauth2/token'
+        # resource = 'https://vault.azure.net'
+        # url = 'http://localhost:50342/oauth2/token'
         data = dict(resource=resource)
-        #headers = dict(MetaData='true')
+        # headers = dict(MetaData='true')
 
-        response = requests.post(url, data=data, headers=headers,timeout=1)
+        response = requests.post(url, data=data, headers=headers, timeout=1)
         if not response.ok:
             raise RuntimeError(response.content)
         return response.json()['access_token']
 
-    def get_access_token_ld(self,
-        ldauthorityhosturl, 
-        ldtenant,
-        ldresource,
-        ldclientid,
-        ldclientSecret):
-        
+    def get_access_token_ld(
+            self,
+            ldauthorityhosturl,
+            ldtenant,
+            ldresource,
+            ldclientid,
+            ldclientsecret
+    ):
+
         """
         Get OAuth2 access token for REST API call for L&D services
 
         :param ldtenant: tenant id of the AAD application
         :param ldresource: L&D resource url
         :param ldclientid: client id of the AAD application
-        :param ldclientSecret: client secret provided by L&D
+        :param ldclientsecret: client secret provided by L&D
         :return: access token
 
         """
@@ -84,11 +98,17 @@ class LdIntegration(object):
         token = context.acquire_token_with_client_credentials(
             ldresource,
             ldclientid,
-            ldclientSecret)
+            ldclientsecret)
 
         return token['accessToken']
 
-    def get_keyvault_secret(self, access_token, keyvault_url, key_name, api_version='2016-10-01'):
+    def get_key_vault_secret(
+            self,
+            access_token,
+            key_vault_url,
+            key_name,
+            api_version='2016-10-01'
+    ):
         """
 
         Get value of a key from Azure Key-vault
@@ -101,12 +121,16 @@ class LdIntegration(object):
         """
 
         headers_credentilas = {'Authorization': 'Bearer' + ' ' + (access_token)}
-        request_url = "{}/secrets/{}?api-version={}".format(keyvault_url, key_name, api_version)
+        request_url = "{}/secrets/{}?api-version={}".format(key_vault_url, key_name, api_version)
         response = requests.get(request_url, headers=headers_credentilas).json()
         return response['value']
 
-    def get_api_data(self, request_url, headers=None):
-        
+    def get_api_data(
+            self,
+            request_url,
+            headers=None
+    ):
+
         """
 
         :param request_url: api url to get the data
@@ -123,7 +147,11 @@ class LdIntegration(object):
         except requests.exceptions.RequestException as e:
             self.log(e, "debug")
 
-    def get_course_catalog_data(self, request_url, headers=None):
+    def get_course_catalog_data(
+            self,
+            request_url,
+            headers=None
+    ):
         """
 
         :param request_url: api url to get the data
