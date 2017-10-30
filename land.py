@@ -3,11 +3,9 @@ A collection of functions related to Open edX Integration with L&D
 """
 
 import json
-import os
-import sys
+from datetime import datetime, timedelta
 
 import requests
-from datetime import datetime, timedelta
 import adal
 
 
@@ -41,7 +39,7 @@ class Ldintegration(object):
                 self.logger.debug(message)
 
     @property
-    def get_access_token(self):
+    def get_access_token(self,resource,url,headers,data):
 
         """
 
@@ -49,10 +47,10 @@ class Ldintegration(object):
 
         """
 
-        resource = 'https://vault.azure.net'
-        url = 'http://localhost:50342/oauth2/token'
-        data = dict(resource=resource)
-        headers = dict(MetaData='true')
+        #resource = 'https://vault.azure.net'
+        #url = 'http://localhost:50342/oauth2/token'
+        #data = dict(resource=resource)
+        #headers = dict(MetaData='true')
 
         response = requests.post(url, data=data, headers=headers)
         if not response.ok:
@@ -99,4 +97,3 @@ class Ldintegration(object):
         # print(request_url)
         response = requests.get(request_url, headers=headers_credentilas).json()
         return response['value']
-
