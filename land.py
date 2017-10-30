@@ -9,7 +9,13 @@ import adal
 
 class LdIntegration(object):
     """
-    TODO:
+    **Use cases**
+        
+        1) "GET" secrets from Azure key vault    
+        2) "GET" data from Edx
+        3) Mapping the data
+        4) "POST" the data to L&D
+
     """
     def __init__(
             self,
@@ -228,4 +234,3 @@ class LdIntegration(object):
             ld_course_catalog.append(each_catalog)
             each_catalog = {}
         return ld_course_catalog
-    
