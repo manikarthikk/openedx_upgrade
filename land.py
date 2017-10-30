@@ -81,7 +81,6 @@ class Ldintegration(object):
             ldclientid,
             ldclientSecret)
 
-        # return type(json.dumps(token,indent=2))
         return token['accessToken']
 
     def get_keyvault_secret(self, access_token, keyvault_url, key_name, api_version='2016-10-01'):
