@@ -169,7 +169,7 @@ class LdIntegration(object):
             req_api_data = req_api_data + user_data['results']
         return req_api_data
 
-    def catalog_data_mapping(
+        def catalog_data_mapping(
             self,
             source_system_id,
             course_catalog_data
@@ -202,11 +202,11 @@ class LdIntegration(object):
             each_catalog["MediaType"] = "Course"
             each_catalog["Status"] = "Active"
             each_catalog["DescriptionLong"] = "null"
-            each_catalog["SunsetDate"] = "null"
+            each_catalog["SunsetDate"] = each['end'].split('T')[0]
             each_catalog["Keywords"] = each['name']
             each_catalog["ThumbnailLargeUri"] = each['media']['image']['large']
-            each_catalog["AvailabilityDate"] = "1/1/2030"
-            each_catalog["CreatedDateAtSource"] = "10/26/2017"
+            each_catalog["AvailabilityDate"] = each['enrollment_start'].split('T')[0]
+            each_catalog["CreatedDateAtSource"] = datetime.now().replace(microsecond=0).isoformat()
             each_catalog["Name"] = each['name']
             each_catalog["Url"] = "https://openedx.microsoft.com/courses/" + each['course_id'] + "/about"
             each_catalog["DescriptionShort"] = "null"
