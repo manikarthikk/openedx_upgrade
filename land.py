@@ -9,13 +9,11 @@ import requests
 import adal
 
 
-
 class LdIntegration(object):
     def __init__(self, logger=None):
 
         # get reference to the user-specified python logger that has already been initialized
         self.logger = logger
-        self.db = None
 
     def log(self, message, message_type="info"):
 
@@ -38,7 +36,7 @@ class LdIntegration(object):
             else:
                 self.logger.debug(message)
 
-    def get_access_token(self,resource,url,headers,data):
+    def get_access_token(self, resource, url, headers):
 
         """
 
@@ -46,7 +44,8 @@ class LdIntegration(object):
 
         :param resourse_url: principal resource url. Example: 'https://vault.azure.net'
         :param headers: required headers for the service url
-        :param url: this was the request url. By defalt 'http://localhost:50342/oauth2/token' in MSI implementation
+        :param url: this was the request url. By defalt 'http://localhost:50342/oauth2/token'
+                      in MSI implementation
         :param data: Meta data for the servie
         :return: returns the access_token
 
@@ -54,7 +53,7 @@ class LdIntegration(object):
 
         #resource = 'https://vault.azure.net'
         #url = 'http://localhost:50342/oauth2/token'
-        #data = dict(resource=resource)
+        data = dict(resource=resource)
         #headers = dict(MetaData='true')
 
         response = requests.post(url, data=data, headers=headers,timeout=1)
@@ -62,7 +61,13 @@ class LdIntegration(object):
             raise RuntimeError(response.content)
         return response.json()['access_token']
 
-    def get_access_token_ld(self, ldauthorityhosturl, ldtenant, ldresource, ldclientid, ldclientSecret):
+    def get_access_token_ld(self,
+        ldauthorityhosturl, 
+        ldtenant,
+        ldresource,
+        ldclientid,
+        ldclientSecret):
+        
         """
         Get OAuth2 access token for REST API call for L&D services
 
@@ -102,7 +107,7 @@ class LdIntegration(object):
         response = requests.get(request_url, headers=headers_credentilas).json()
         return response['value']
 
-    def get_api_data(request_url,headers=None):
+    def get_api_data(self, request_url, headers=None):
         """
 
         :param request_url: api url to get the data
@@ -119,7 +124,7 @@ class LdIntegration(object):
         except requests.exceptions.RequestException as e:
             self.log(e, "debug")
 
-    def get_course_catalog_data(request_url,headers=None):
+    def get_course_catalog_data(self, request_url, headers=None):
         """
 
         :param request_url: api url to get the data
