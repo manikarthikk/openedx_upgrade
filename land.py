@@ -94,31 +94,37 @@ class Ldintegration(object):
         :return: secret value
 
         """
-        
+
         headers_credentilas = {'Authorization': 'Bearer' + ' ' + (access_token)}
         request_url = "{}/secrets/{}?api-version={}".format(keyvault_url, key_name, api_version)
         response = requests.get(request_url, headers=headers_credentilas).json()
         return response['value']
-    
+
     def call_api_data(request_url,headers):
         """
 
         :param request_url:
         :param headers:
         :return:
-        
-        """
-        return requests.get(request_url,headers=headers, verify=False).json()
 
-    
+        """
+        try:
+            return requests.get(request_url,headers=headers, verify=False).json()
+        except requests.exceptions.Timeout as e:
+            self.log(e, "debug")
+        except requests.exceptions.ConnectionError as e:
+            self.log(e, "debug")
+        except requests.exceptions.RequestException as e:
+            self.log(e, "debug")
+
     def grades_api_data(request_url,headers=None,time_loging=None):
         """
-        
+
         :param request_url:
         :param headers:
         :param time_loging:
         :return: total api data
-        
+
         """
         user_data = self.call_api_data(request_url,headers)
         req_api_data = user_data['results']
@@ -127,5 +133,5 @@ class Ldintegration(object):
             user_data = self.call_api_data(user_data['pagination']['next'],headers)
             #print(user_data)
             req_api_data = req_api_data + user_data['results']
-        return 
-    
+        return req_api_data
+
