@@ -115,6 +115,13 @@ class LdIntegration(object):
         """
 
         Get value of a key from Azure Key-vault
+            
+            1) this function calls a local MSI endpoint to get an access token
+        
+            2) MSI uses the locally injected credentials to get an access token from Azure AD
+        
+            3) returned access token can be used to authenticate to an Azure service
+
         :param access_token: access_token obtained from azure AD tenant
         :param keyvault_url: url of the key_vault
         :param key_name: name of the key_vault
@@ -135,6 +142,7 @@ class LdIntegration(object):
     ):
 
         """
+        Get the data from the provided api url with optional headers using requests python library
 
         :param request_url: api url to get the data
         :param headers: headers for the api request. defaults to None
@@ -156,6 +164,7 @@ class LdIntegration(object):
             headers=None
     ):
         """
+        returns combined paginated responses for a given api url with optional headers
 
         :param request_url: api url to get the data
         :param headers: required headers obtained from open edx
@@ -176,8 +185,11 @@ class LdIntegration(object):
     ):
 
         """
-        course catalog data mapping
+        
+        mapping the provided EDX data to L&D acceptable request body format 
+
         :param course_catalog_data: course catalog data obtained from edx
+        :param source_system_id: system_id provided by L&D as part of onboarding
         :return: mapped course catalog data to L&D
 
         """
