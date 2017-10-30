@@ -10,7 +10,7 @@ import adal
 
 
 
-class Ldintegration(object):
+class LdIntegration(object):
     def __init__(self, logger=None):
 
         # get reference to the user-specified python logger that has already been initialized
