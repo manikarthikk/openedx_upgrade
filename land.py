@@ -120,11 +120,11 @@ class Ldintegration(object):
         :return: total api data
         
         """
-        user_data = get_api_data(request_url,headers)
+        user_data = self.call_api_data(request_url,headers)
         req_api_data = user_data['results']
         while user_data['pagination']['next']:
             print("in WHILE LOOP")
-            user_data = get_api_data(user_data['pagination']['next'],headers)
+            user_data = self.call_api_data(user_data['pagination']['next'],headers)
             #print(user_data)
             req_api_data = req_api_data + user_data['results']
         return 
