@@ -8,6 +8,9 @@ import adal
 
 
 class LdIntegration(object):
+    """
+    TODO:
+    """
     def __init__(
             self,
             logger=None
@@ -168,14 +171,15 @@ class LdIntegration(object):
 
     def catalog_data_mapping(
             self,
+            source_system_id,
             course_catalog_data
     ):
 
         """
         course catalog data mapping
         :param course_catalog_data: course catalog data obtained from edx
-        :return: mapped course catalog data to L&D 
-        
+        :return: mapped course catalog data to L&D
+
         """
         ld_course_catalog = []
         each_catalog = {}
@@ -190,7 +194,7 @@ class LdIntegration(object):
             each_catalog["HideInRoadMap"] = "null"
             each_catalog["ParentSourceSystemId"] = "0"
             each_catalog["Deleted"] = "false"
-            each_catalog["SourceSystemid"] = "16"
+            each_catalog["SourceSystemid"] = source_system_id
             # each_catalog["Language"] = "en-us"
             each_catalog["Version"] = "1"
             each_catalog["Brand"] = "Infopedia"
