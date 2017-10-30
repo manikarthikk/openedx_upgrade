@@ -89,10 +89,38 @@ class Ldintegration(object):
         :return: secret value
 
         """
-        # print("Here is the access_token")
-        # print(access_token)
+        
         headers_credentilas = {'Authorization': 'Bearer' + ' ' + (access_token)}
         request_url = "{}/secrets/{}?api-version={}".format(keyvault_url, key_name, api_version)
-        # print(request_url)
         response = requests.get(request_url, headers=headers_credentilas).json()
         return response['value']
+    
+    def call_api_data(request_url,headers):
+        """
+
+        :param request_url:
+        :param headers:
+        :return:
+        
+        """
+        return requests.get(request_url,headers=headers, verify=False).json()
+
+    
+    def grades_api_data(request_url,headers=None,time_loging=None):
+        """
+        
+        :param request_url:
+        :param headers:
+        :param time_loging:
+        :return: total api data
+        
+        """
+        user_data = get_api_data(request_url,headers)
+        req_api_data = user_data['results']
+        while user_data['pagination']['next']:
+            print("in WHILE LOOP")
+            user_data = get_api_data(user_data['pagination']['next'],headers)
+            #print(user_data)
+            req_api_data = req_api_data + user_data['results']
+        return 
+    
