@@ -165,3 +165,50 @@ class LdIntegration(object):
             user_data = self.get_api_data(user_data['pagination']['next'], headers)
             req_api_data = req_api_data + user_data['results']
         return req_api_data
+
+    def catalog_data_mapping(
+            self,
+            course_catalog_data
+    ):
+
+        """
+        course catalog data mapping
+        :param course_catalog_data: course catalog data obtained from edx
+        :return: mapped course catalog data to L&D 
+        
+        """
+        ld_course_catalog = []
+        each_catalog = {}
+        for each in course_catalog_data:
+            each_catalog["Confidential"] = "null"
+            each_catalog["BIClassification"] = "MBI"
+            each_catalog["BusinessOrg"] = "null"
+            each_catalog["IsPrimary"] = "true"
+            each_catalog["IsShareable"] = "null"
+            each_catalog["CourseType"] = "Build"
+            each_catalog["HideInSearch"] = "hidden"
+            each_catalog["HideInRoadMap"] = "null"
+            each_catalog["ParentSourceSystemId"] = "0"
+            each_catalog["Deleted"] = "false"
+            each_catalog["SourceSystemid"] = "16"
+            # each_catalog["Language"] = "en-us"
+            each_catalog["Version"] = "1"
+            each_catalog["Brand"] = "Infopedia"
+            each_catalog["Modality"] = "OLT"
+            each_catalog["MediaType"] = "Course"
+            each_catalog["Status"] = "Active"
+            each_catalog["DescriptionLong"] = "null"
+            each_catalog["SunsetDate"] = "null"
+            each_catalog["Keywords"] = each['name']
+            each_catalog["ThumbnailLargeUri"] = each['media']['image']['large']
+            each_catalog["AvailabilityDate"] = "1/1/2030"
+            each_catalog["CreatedDateAtSource"] = "10/26/2017"
+            each_catalog["Name"] = each['name']
+            each_catalog["Url"] = "https://openedx.microsoft.com/courses/" + each['course_id'] + "/about"
+            each_catalog["DescriptionShort"] = "null"
+            each_catalog["ThumbnailShort"] = each['media']['image']['small']
+            each_catalog["TrainingOrgs"] = each['org']
+            each_catalog["ExternalId"] = each['course_id'].split(':')[1]
+            ld_course_catalog.append(each_catalog)
+            each_catalog = {}
+        return ld_course_catalog
