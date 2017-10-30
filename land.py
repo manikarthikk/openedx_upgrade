@@ -234,3 +234,20 @@ class LdIntegration(object):
             ld_course_catalog.append(each_catalog)
             each_catalog = {}
         return ld_course_catalog
+
+
+    def post_data_ld(self, url, headers, data):
+        """
+
+        POST data to L&D services
+
+        """
+
+        try:
+            return requests.post(url, data=data, headers=headers, verify=False, timeout=1)
+        except requests.exceptions.Timeout as e:
+            self.log(e, "debug")
+        except requests.exceptions.ConnectionError as e:
+            self.log(e, "debug")
+        except requests.exceptions.RequestException as e:
+            self.log(e, "debug")
