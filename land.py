@@ -38,7 +38,6 @@ class Ldintegration(object):
             else:
                 self.logger.debug(message)
 
-    @property
     def get_access_token(self,resource,url,headers,data):
 
         """
