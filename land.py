@@ -118,7 +118,7 @@ class Ldintegration(object):
         except requests.exceptions.RequestException as e:
             self.log(e, "debug")
 
-    def get_course_catalog_data(request_url,headers=None,time_loging=None):
+    def get_course_catalog_data(request_url,headers=None):
         """
 
         :param request_url:
@@ -131,7 +131,6 @@ class Ldintegration(object):
         req_api_data = user_data['results']
         while user_data['pagination']['next']:
             user_data = self.get_api_data(user_data['pagination']['next'],headers)
-            #print(user_data)
             req_api_data = req_api_data + user_data['results']
         return req_api_data
 
