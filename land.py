@@ -42,7 +42,7 @@ class Ldintegration(object):
 
         """
 
-        Get OAuth2 access  token for REST API call
+        Get OAuth2 access  token for REST API call in azure MSI extension
 
         :param resourse_url: principal resource url. Example: 'https://vault.azure.net'
         :param headers: required headers for the service url
@@ -57,13 +57,14 @@ class Ldintegration(object):
         #data = dict(resource=resource)
         #headers = dict(MetaData='true')
 
-        response = requests.post(url, data=data, headers=headers)
+        response = requests.post(url, data=data, headers=headers,timeout=1)
         if not response.ok:
             raise RuntimeError(response.content)
         return response.json()['access_token']
 
     def get_access_token_ld(self, ldauthorityhosturl, ldtenant, ldresource, ldclientid, ldclientSecret):
         """
+        Get OAuth2 access token for REST API call for L&D services
 
         :param ldtenant: tenant id of the AAD application
         :param ldresource: L&D resource url
@@ -101,16 +102,16 @@ class Ldintegration(object):
         response = requests.get(request_url, headers=headers_credentilas).json()
         return response['value']
 
-    def get_api_data(request_url,headers):
+    def get_api_data(request_url,headers=None):
         """
 
-        :param request_url:
-        :param headers:
-        :return:
+        :param request_url: api url to get the data
+        :param headers: headers for the api request. defaults to None
+        :return: return the api data
 
         """
         try:
-            return requests.get(request_url,headers=headers, verify=False).json()
+            return requests.get(request_url,headers=headers, verify=False,timeout=1).json()
         except requests.exceptions.Timeout as e:
             self.log(e, "debug")
         except requests.exceptions.ConnectionError as e:
@@ -121,10 +122,9 @@ class Ldintegration(object):
     def get_course_catalog_data(request_url,headers=None):
         """
 
-        :param request_url:
-        :param headers:
-        :param time_loging:
-        :return: total api data
+        :param request_url: api url to get the data
+        :param headers: required headers obtained from open edx
+        :return: return the results including the paginated data
 
         """
         user_data = self.get_api_data(request_url,headers)
@@ -133,4 +133,3 @@ class Ldintegration(object):
             user_data = self.get_api_data(user_data['pagination']['next'],headers)
             req_api_data = req_api_data + user_data['results']
         return req_api_data
-
