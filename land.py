@@ -144,9 +144,9 @@ class LdIntegration(object):
         request_url = "{}/secrets/{}?api-version={}".format(key_vault_url, key_name, api_version)
         response = requests.get(request_url, headers=headers_credentilas).json()
         if response.ok:
-            self.log("Got the secret key %s from key vault",key_name)
+            self.log("Got the secret key %s from key vault", key_name)
         else:
-            raise Exception("Un-handled exception occured while accessing %s from key vault",key_name)
+            raise Exception("Un-handled exception occured while accessing %s from key vault", key_name)
         return response['value']
 
     def get_api_data(
@@ -199,8 +199,8 @@ class LdIntegration(object):
     ):
 
         """
-        
-        mapping the provided EDX data to L&D acceptable request body format 
+
+        mapping the provided EDX data to L&D acceptable request body format
 
         :param course_catalog_data: course catalog data obtained from edx
         :param source_system_id: system_id provided by L&D as part of onboarding
