@@ -1,7 +1,7 @@
 """
 A collection of functions related to Open edX Integration with L&D
 """
-#from datetime import datetime, timedelta
+from datetime import datetime, timedelta
 import json
 import requests
 import adal
@@ -11,7 +11,8 @@ class LdIntegration(object):
     """
     **Use cases**
 
-    get the data from OpenEdx and post the data to L&D in MSI(Managed Service Identity) enabled Linux deployment
+    get the data from OpenEdx and post the data to L&D in MSI(Managed Service Identity)
+        enabled Linux deployment.
 
         1) get secrets from Azure key vault
         2) get data from Edx
@@ -155,13 +156,13 @@ class LdIntegration(object):
 
         """
         try:
-            return requests.get(request_url, headers=headers, verify=False, timeout=1).json()
-        except requests.exceptions.Timeout as e:
-            self.log(e, "debug")
-        except requests.exceptions.ConnectionError as e:
-            self.log(e, "debug")
-        except requests.exceptions.RequestException as e:
-            self.log(e, "debug")
+            return requests.get(request_url, headers=headers, verify=False, timeout=2).json()
+        except requests.exceptions.Timeout as error:
+            self.log(error, "debug")
+        except requests.exceptions.ConnectionError as error:
+            self.log(error, "debug")
+        except requests.exceptions.RequestException as error:
+            self.log(error, "debug")
 
     def get_course_catalog_data(
             self,
@@ -243,11 +244,11 @@ class LdIntegration(object):
         """
 
         try:
-            return requests.post(url, data=data, headers=headers,timeout=1)
-        except requests.exceptions.Timeout as e:
-            self.log(e, "debug")
-        except requests.exceptions.ConnectionError as e:
-            self.log(e, "debug")
-        except requests.exceptions.RequestException as e:
-            self.log(e, "debug")
+            return requests.post(url, data=data, headers=headers, timeout=2)
+        except requests.exceptions.Timeout as error:
+            self.log(error, "debug")
+        except requests.exceptions.ConnectionError as error:
+            self.log(error, "debug")
+        except requests.exceptions.RequestException as error:
+            self.log(error, "debug")
             
