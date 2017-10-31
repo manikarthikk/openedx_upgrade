@@ -108,8 +108,12 @@ class LdIntegration(object):
             ldresource,
             ldclientid,
             ldclientsecret)
+        if token['accessToken']:
+            self.log("Got Oauth2 access token for L&D REST API")
+            return token['accessToken']
+        else:
+            raise Exception("Un-handled Exception occured while accessing the token for L&D")
 
-        return token['accessToken']
 
     def get_key_vault_secret(
             self,
