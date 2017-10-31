@@ -10,8 +10,8 @@ import adal
 class LdIntegration(object):
     """
     **Use cases**
-        
-        get the data from OpenEdx and post the data to L&D in MSI(Managed Service Identity) enabled Linux deployment
+
+    get the data from OpenEdx and post the data to L&D in MSI(Managed Service Identity) enabled Linux deployment
 
         1) get secrets from Azure key vault
         2) get data from Edx
