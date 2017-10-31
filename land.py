@@ -1,7 +1,7 @@
 """
 A collection of functions related to Open edX Integration with L&D
 """
-from datetime import datetime, timedelta
+#from datetime import datetime, timedelta
 import json
 import requests
 import adal
@@ -10,11 +10,13 @@ import adal
 class LdIntegration(object):
     """
     **Use cases**
-       
-        1) "GET" secrets from Azure key vault    
-        2) "GET" data from Edx
+        
+        get the data from OpenEdx and post the data to L&D in MSI(Managed Service Identity) enabled Linux deployment
+
+        1) get secrets from Azure key vault
+        2) get data from Edx
         3) Mapping the data
-        4) "POST" the data to L&D
+        4) Post the data to L&D
 
     """
     def __init__(
