@@ -59,7 +59,7 @@ class LdIntegration(object):
 
         """
 
-        Get OAuth2 access  token for REST API call in azure MSI extension
+        Get OAuth2 access token for REST API call using azure MSI extension
 
         :param resourse_url: principal resource url. Example: 'https://vault.azure.net'
         :param headers: required headers for the service url
@@ -78,6 +78,8 @@ class LdIntegration(object):
         response = requests.post(url, data=data, headers=headers, timeout=1)
         if not response.ok:
             raise RuntimeError(response.content)
+        else:
+            self.log("Got OAuth2 access token using MSI")
         return response.json()['access_token']
 
     def get_access_token_ld(
@@ -185,6 +187,7 @@ class LdIntegration(object):
         :return: return the results including the paginated data
 
         """
+        self.log("Calling OpenEdx Course Catalog API")
         user_data = self.get_api_data(request_url, headers)
         req_api_data = user_data['results']
         while user_data['pagination']['next']:
@@ -207,6 +210,7 @@ class LdIntegration(object):
         :return: mapped course catalog data to L&D
 
         """
+        self.log("Mapping the course catalog data to L&D format")
         ld_course_catalog = []
         each_catalog = {}
         for each in course_catalog_data:
@@ -250,7 +254,7 @@ class LdIntegration(object):
         POST data to L&D services
 
         """
-
+        self.log("Preparing to post the data to L&D Course catalog API")
         try:
             return requests.post(url, data=data, headers=headers, timeout=2)
         except requests.exceptions.Timeout as error:
