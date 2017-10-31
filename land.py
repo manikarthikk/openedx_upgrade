@@ -112,7 +112,7 @@ class LdIntegration(object):
             self.log("Got Oauth2 access token for L&D REST API")
             return token['accessToken']
         else:
-            raise Exception("Un-handled Exception occured while accessing the token for L&D")
+            raise Exception("Un-handled exception occured while accessing the token for L&D")
 
 
     def get_key_vault_secret(
@@ -125,11 +125,11 @@ class LdIntegration(object):
         """
 
         Get value of a key from Azure Key-vault
-            
+
             1) this function calls a local MSI endpoint to get an access token
-        
+
             2) MSI uses the locally injected credentials to get an access token from Azure AD
-        
+
             3) returned access token can be used to authenticate to an Azure service
 
         :param access_token: access_token obtained from azure AD tenant
@@ -143,6 +143,10 @@ class LdIntegration(object):
         headers_credentilas = {'Authorization': 'Bearer' + ' ' + (access_token)}
         request_url = "{}/secrets/{}?api-version={}".format(key_vault_url, key_name, api_version)
         response = requests.get(request_url, headers=headers_credentilas).json()
+        if response.ok:
+            self.log("Got the secret key %s from key vault",key_name)
+        else:
+            raise Exception("Un-handled exception occured while accessing %s from key vault",key_name)
         return response['value']
 
     def get_api_data(
