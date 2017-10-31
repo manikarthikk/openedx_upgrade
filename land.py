@@ -199,8 +199,8 @@ class LdIntegration(object):
     ):
 
         """
-        
-        mapping the provided EDX data to L&D acceptable request body format 
+
+        mapping the provided EDX data to L&D acceptable request body format
 
         :param course_catalog_data: course catalog data obtained from edx
         :param source_system_id: system_id provided by L&D as part of onboarding
