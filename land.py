@@ -2,7 +2,7 @@
 A collection of functions related to Open edX Integration with L&D
 """
 from datetime import datetime, timedelta
-
+import json
 import requests
 import adal
 
@@ -230,7 +230,7 @@ class LdIntegration(object):
             each_catalog["ExternalId"] = each['course_id'].split(':')[1]
             ld_course_catalog.append(each_catalog)
             each_catalog = {}
-        return ld_course_catalog
+        return json.dumps(ld_course_catalog)
 
 
     def post_data_ld(self, url, headers, data):
@@ -241,7 +241,7 @@ class LdIntegration(object):
         """
 
         try:
-            return requests.post(url, data=data, headers=headers, verify=False, timeout=1)
+            return requests.post(url, data=data, headers=headers,timeout=1)
         except requests.exceptions.Timeout as e:
             self.log(e, "debug")
         except requests.exceptions.ConnectionError as e:
