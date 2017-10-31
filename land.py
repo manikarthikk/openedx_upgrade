@@ -51,10 +51,7 @@ class LdIntegration(object):
                 self.logger.debug(message)
 
     def get_access_token(
-            self,
-            resource,
-            url,
-            headers
+            self
     ):
 
         """
@@ -70,10 +67,10 @@ class LdIntegration(object):
 
         """
 
-        # resource = 'https://vault.azure.net'
-        # url = 'http://localhost:50342/oauth2/token'
+        resource = 'https://vault.azure.net'
+        url = 'http://localhost:50342/oauth2/token'
         data = dict(resource=resource)
-        # headers = dict(MetaData='true')
+        headers = dict(MetaData='true')
 
         response = requests.post(url, data=data, headers=headers, timeout=1)
         if not response.ok:
