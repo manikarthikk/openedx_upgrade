@@ -38,7 +38,7 @@ class LdIntegration(object):
         Log a message
 
         :param message: the message to log
-        :param message_type: the type of log message (info, warning or debug).
+        :param message_type: the type of log message (info, warning, error or debug).
                              If a message is not info or warning, it falls back to debug
 
         """
@@ -49,7 +49,10 @@ class LdIntegration(object):
 
             elif message_type == "warning":
                 self.logger.warning(message)
-
+            
+            elif message_type == "error":
+                self.logger.error(message)
+            
             else:
                 self.logger.debug(message)
 
@@ -144,12 +147,12 @@ class LdIntegration(object):
 
         headers_credentilas = {'Authorization': 'Bearer' + ' ' + (access_token)}
         request_url = "{}/secrets/{}?api-version={}".format(key_vault_url, key_name, api_version)
-        response = requests.get(request_url, headers=headers_credentilas).json()
+        response = requests.get(request_url, headers=headers_credentilas)
         if response.ok:
             self.log("Got the secret key %s from key vault", key_name)
         else:
             raise Exception("Un-handled exception occured while accessing %s from key vault", key_name)
-        return response['value']
+        return response.json()['value']
 
     def get_api_data(
             self,
@@ -168,11 +171,11 @@ class LdIntegration(object):
         try:
             return requests.get(request_url, headers=headers, verify=False, timeout=2).json()
         except requests.exceptions.Timeout as error:
-            self.log(error, "debug")
+            self.log(error, "error")
         except requests.exceptions.ConnectionError as error:
-            self.log(error, "debug")
+            self.log(error, "error")
         except requests.exceptions.RequestException as error:
-            self.log(error, "debug")
+            self.log(error, "error")
 
     def get_course_catalog_data(
             self,
@@ -180,7 +183,7 @@ class LdIntegration(object):
             headers=None
     ):
         """
-        returns combined paginated responses for a given api url with optional headers
+        returns data with combined paginated responses for a given api url with optional headers
 
         :param request_url: api url to get the data
         :param headers: required headers obtained from open edx
@@ -256,11 +259,71 @@ class LdIntegration(object):
         """
         self.log("Preparing to post the data to L&D Course catalog API")
         try:
-            return requests.post(url, data=data, headers=headers, timeout=2)
+            response = requests.post(url, data=data, headers=headers)
+            if response.ok:
+                message = "Data posted sucessfully with %s" % response
+                self.log(message, "info")
+            else:
+                message = "Error occured while posting the data  %s" % response
+                self.log(message, "warning")
+        #TODO: change the response.ok to response['errormessage'] = none
         except requests.exceptions.Timeout as error:
-            self.log(error, "debug")
+            self.log(error, "error")
         except requests.exceptions.ConnectionError as error:
-            self.log(error, "debug")
+            self.log(error, "error")
         except requests.exceptions.RequestException as error:
-            self.log(error, "debug")
-            
+            self.log(error, "error")
+    def mapping_api_data(self,data):
+        k = []
+        d = {}
+        #LOG.warning("Starting the mapping of data")
+        for i in data:
+
+            #print i.keys()
+            #d["UserAlias"] = i['email']
+            d["UserAlias"] = 'v-mankon@microsoft.com'
+            d["ExternalId"] = i['course_key']
+            #d["ConsumptionStatus"] = i['letter_grade']
+            #d["grade"] = i[3]
+            d["SourceSystemId"] = 16
+            d["PersonnelNumber"] = 0
+            d["SFSync"] = 0
+            d["UUID"] = "null"
+            d["ActionVerb"] = "null"
+            d["ActionValue"] = 0
+            #d["CreatedDate"] = i[4]
+            d["CreatedDate"] = "22"
+            d["SubmittedBy"] = "landd_user@oxa.com"
+            d["ActionFlag"] = "null"
+            if i['letter_grade'] == 'Pass':
+                d["ConsumptionStatus"] = 'Passed'
+            elif i['letter_grade'] == 'Fail':
+                d["ConsumptionStatus"] = "Failed"
+            else:
+                d["ConsumptionStatus"] = "InProgress"
+            k.append(d)
+            d = {}
+
+        #LOG.warning("Mapping of data is finished")
+        return json.dumps(k)
+
+
+    def get_and_post_consumption_data(self, request_edx_url, edx_headers, ld_headers, consumption_url_ld):
+        """
+        TODO: l
+        """
+        time_log = open('api_call_time.txt', 'w')
+        #f = open('api_call_time.txt', 'w')
+        call_time = (datetime.now()-timedelta(days=29)).replace(microsecond=0).isoformat()
+        time_log.write(call_time)
+        time_log.close()
+        request_edx_url = request_edx_url + 
+        user_data = self.get_api_data(request_edx_url, edx_headers)
+        #req_grades_data = user_data['results']
+        #self.mapping_api_data(user_data['results'])
+        self.post_data_ld(consumption_url_ld, ld_headers, self.mapping_api_data(user_data['results']))
+        while user_data['pagination']['next']:
+            user_data = self.get_api_data(user_data['pagination']['next'], edx_headers)
+            self.post_data_ld(consumption_url_ld, ld_headers, self.mapping_api_data(user_data['results']))
+            #req_grades_data = req_grades_data + user_data['results']
+        return user_data
