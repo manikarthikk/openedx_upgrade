@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import json
 import requests
 import adal
+import re
 
 
 class LdIntegration(object):
@@ -214,7 +215,7 @@ class LdIntegration(object):
 
         """
         self.log("Mapping the course catalog data to L&D format")
-        ld_course_catalog = []
+        all_course_catalog = []
         each_catalog = {}
         for each in course_catalog_data:
             each_catalog["Confidential"] = "null"
@@ -248,7 +249,7 @@ class LdIntegration(object):
             each_catalog["ExternalId"] = each['course_id'].split(':')[1]
             ld_course_catalog.append(each_catalog)
             each_catalog = {}
-        return json.dumps(ld_course_catalog)
+        return json.dumps(all_course_catalog)
 
 
     def post_data_ld(self, url, headers, data):
@@ -273,39 +274,39 @@ class LdIntegration(object):
             self.log(error, "error")
         except requests.exceptions.RequestException as error:
             self.log(error, "error")
-    def mapping_api_data(self,data):
-        k = []
-        d = {}
+    def mapping_api_data(self, data):
+        all_user_grades = []
+        each_user = {}
         #LOG.warning("Starting the mapping of data")
-        for i in data:
-
-            #print i.keys()
-            #d["UserAlias"] = i['email']
-            d["UserAlias"] = 'v-mankon@microsoft.com'
-            d["ExternalId"] = i['course_key']
-            #d["ConsumptionStatus"] = i['letter_grade']
-            #d["grade"] = i[3]
-            d["SourceSystemId"] = 16
-            d["PersonnelNumber"] = 0
-            d["SFSync"] = 0
-            d["UUID"] = "null"
-            d["ActionVerb"] = "null"
-            d["ActionValue"] = 0
-            #d["CreatedDate"] = i[4]
-            d["CreatedDate"] = "22"
-            d["SubmittedBy"] = "landd_user@oxa.com"
-            d["ActionFlag"] = "null"
-            if i['letter_grade'] == 'Pass':
-                d["ConsumptionStatus"] = 'Passed'
-            elif i['letter_grade'] == 'Fail':
-                d["ConsumptionStatus"] = "Failed"
-            else:
-                d["ConsumptionStatus"] = "InProgress"
-            k.append(d)
-            d = {}
+        for each_user in data:
+            if  not bool(re.search('(?i)^(?:(?!(microsoft.com)).)+$',d["UserAlias"] )):
+                #print i.keys()
+                #d["UserAlias"] = i['email']
+                each_user["UserAlias"] = 'v-mankon@microsoft.com'
+                each_user["ExternalId"] = i['course_key']
+                #d["ConsumptionStatus"] = i['letter_grade']
+                #d["grade"] = i[3]
+                each_user["SourceSystemId"] = 16
+                each_user["PersonnelNumber"] = 0
+                each_user["SFSync"] = 0
+                each_user["UUID"] = "null"
+                each_user["ActionVerb"] = "null"
+                each_user["ActionValue"] = 0
+                #each_user["CreatedDate"] = i[4]
+                each_user["CreatedDate"] = "22"
+                each_user["SubmittedBy"] = "landd_user@oxa.com"
+                d["ActionFlag"] = "null"
+                if each_user['letter_grade'] == 'Pass':
+                    each_user["ConsumptionStatus"] = 'Passed'
+                elif each_user['letter_grade'] == 'Fail':
+                    each_user["ConsumptionStatus"] = "Failed"
+                else:
+                    each_user["ConsumptionStatus"] = "InProgress"
+            all_user_grades.append(each_user)
+            each_user = {}
 
         #LOG.warning("Mapping of data is finished")
-        return json.dumps(k)
+        return json.dumps(all_user_grades)
 
 
     def get_and_post_consumption_data(self, request_edx_url, edx_headers, ld_headers, consumption_url_ld):
