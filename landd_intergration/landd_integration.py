@@ -171,7 +171,8 @@ class LdIntegration(object):
 
         """
         try:
-            return requests.get(request_url, headers=headers, verify=False, timeout=2).json()
+            results = requests.get(request_url, headers=headers, verify=False, timeout=2).json()
+            return results
         except requests.exceptions.Timeout as error:
             self.log(error, "error")
         except requests.exceptions.ConnectionError as error:
@@ -253,7 +254,7 @@ class LdIntegration(object):
         return json.dumps(all_course_catalog)
 
 
-    def post_data_ld(self, url, headers, data, time_logging = false):
+    def post_data_ld(self, url, headers, data):
         """
 
         POST data to L&D services
@@ -276,15 +277,12 @@ class LdIntegration(object):
         except requests.exceptions.RequestException as error:
             self.log(error, "error")
     def mapping_api_data(self, data):
-        """
-        Mapping L&D data
-        """
         all_user_grades = []
         each_user = {}
         #LOG.warning("Starting the mapping of data")
         for user in data:
             #L&D only accepts the user emails with '@microsoft.com' accounts
-            if  not bool(re.search('(?i)^(?:(?!(microsoft.com)).)+$', user["email"])):
+            if  not bool(re.search('(?i)^(?:(?!(microsoft.com)).)+$', user['username'])):
                 #print i.keys()
                 #each_user["UserAlias"] = user['email']
                 each_user["UserAlias"] = 'v-mankon@microsoft.com'
@@ -319,25 +317,27 @@ class LdIntegration(object):
         TODO: l
         """
         start_date = open('api_call_time.txt', 'r')
+        k = start_date.read()
         #time_log = open('api_call_time.txt', 'w')
         #f = open('api_call_time.txt', 'w')
         #call_time = (datetime.now()-timedelta(days=29)).replace(microsecond=0).isoformat()
         #time_log.write(call_time)
         start_date.close()
         end_date = datetime.now().replace(microsecond=0).isoformat()
-        self.log('here is the end call time', "info")
+        self.log('here is the end call time',"info")
         self.log(end_date, "info")
-        request_edx_url = request_edx_url + '&start_date=' + start_date + '&end_date=' + end_date
+        request_edx_url = request_edx_url + '&start_date=' + k[:19] + '&end_date=' + end_date
         user_data = self.get_api_data(request_edx_url, edx_headers)
+        #print(user_data)
         #req_grades_data = user_data['results']
         #self.mapping_api_data(user_data['results'])
         self.post_data_ld(consumption_url_ld, ld_headers, self.mapping_api_data(user_data['results']))
         while user_data['pagination']['next']:
             user_data = self.get_api_data(user_data['pagination']['next'], edx_headers)
-            print(user_data['results'])
-            self.post_data_ld(consumption_url_ld, ld_headers, self.mapping_api_data(user_data['results']))
+            self.log("hello","info")
+            response = self.post_data_ld(consumption_url_ld, ld_headers, self.mapping_api_data(user_data['results']))
             #req_grades_data = req_grades_data + user_data['results']
-        write_time = open('api_call_time.txt', 'w')
+        write_time = open('api_call_time.txt','w')
         write_time.write(end_date)
 
         return user_data
