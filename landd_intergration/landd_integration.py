@@ -276,6 +276,9 @@ class LdIntegration(object):
         except requests.exceptions.RequestException as error:
             self.log(error, "error")
     def mapping_api_data(self, data):
+        """
+        Mapping L&D data
+        """
         all_user_grades = []
         each_user = {}
         #LOG.warning("Starting the mapping of data")
@@ -322,7 +325,7 @@ class LdIntegration(object):
         #time_log.write(call_time)
         start_date.close()
         end_date = datetime.now().replace(microsecond=0).isoformat()
-        self.log('here is the end call time',"info")
+        self.log('here is the end call time', "info")
         self.log(end_date, "info")
         request_edx_url = request_edx_url + '&start_date=' + start_date + '&end_date=' + end_date
         user_data = self.get_api_data(request_edx_url, edx_headers)
@@ -331,10 +334,10 @@ class LdIntegration(object):
         self.post_data_ld(consumption_url_ld, ld_headers, self.mapping_api_data(user_data['results']))
         while user_data['pagination']['next']:
             user_data = self.get_api_data(user_data['pagination']['next'], edx_headers)
+            print(user_data['results'])
             self.post_data_ld(consumption_url_ld, ld_headers, self.mapping_api_data(user_data['results']))
             #req_grades_data = req_grades_data + user_data['results']
-        
-        write_time = open('api_call_time.txt','w')
+        write_time = open('api_call_time.txt', 'w')
         write_time.write(end_date)
 
         return user_data
