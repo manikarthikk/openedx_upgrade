@@ -6,6 +6,7 @@ import json
 import requests
 import adal
 import re
+#pylint: disable=line-too-long
 
 
 class LdIntegration(object):
@@ -247,12 +248,12 @@ class LdIntegration(object):
             each_catalog["ThumbnailShort"] = each['media']['image']['small']
             each_catalog["TrainingOrgs"] = each['org']
             each_catalog["ExternalId"] = each['course_id'].split(':')[1]
-            ld_course_catalog.append(each_catalog)
+            all_course_catalog.append(each_catalog)
             each_catalog = {}
         return json.dumps(all_course_catalog)
 
 
-    def post_data_ld(self, url, headers, data):
+    def post_data_ld(self, url, headers, data, time_logging = false):
         """
 
         POST data to L&D services
@@ -278,14 +279,15 @@ class LdIntegration(object):
         all_user_grades = []
         each_user = {}
         #LOG.warning("Starting the mapping of data")
-        for each_user in data:
-            if  not bool(re.search('(?i)^(?:(?!(microsoft.com)).)+$',d["UserAlias"] )):
+        for user in data:
+            #L&D only accepts the user emails with '@microsoft.com' accounts
+            if  not bool(re.search('(?i)^(?:(?!(microsoft.com)).)+$', user["email"])):
                 #print i.keys()
-                #d["UserAlias"] = i['email']
+                #each_user["UserAlias"] = user['email']
                 each_user["UserAlias"] = 'v-mankon@microsoft.com'
-                each_user["ExternalId"] = i['course_key']
-                #d["ConsumptionStatus"] = i['letter_grade']
-                #d["grade"] = i[3]
+                each_user["ExternalId"] = user['course_key']
+                #each_user["ConsumptionStatus"] = i['letter_grade']
+                #each_user["grade"] = i[3]
                 each_user["SourceSystemId"] = 16
                 each_user["PersonnelNumber"] = 0
                 each_user["SFSync"] = 0
@@ -295,7 +297,7 @@ class LdIntegration(object):
                 #each_user["CreatedDate"] = i[4]
                 each_user["CreatedDate"] = "22"
                 each_user["SubmittedBy"] = "landd_user@oxa.com"
-                d["ActionFlag"] = "null"
+                each_user["ActionFlag"] = "null"
                 if each_user['letter_grade'] == 'Pass':
                     each_user["ConsumptionStatus"] = 'Passed'
                 elif each_user['letter_grade'] == 'Fail':
@@ -313,12 +315,16 @@ class LdIntegration(object):
         """
         TODO: l
         """
-        time_log = open('api_call_time.txt', 'w')
+        start_date = open('api_call_time.txt', 'r')
+        #time_log = open('api_call_time.txt', 'w')
         #f = open('api_call_time.txt', 'w')
-        call_time = (datetime.now()-timedelta(days=29)).replace(microsecond=0).isoformat()
-        time_log.write(call_time)
-        time_log.close()
-        request_edx_url = request_edx_url + 
+        #call_time = (datetime.now()-timedelta(days=29)).replace(microsecond=0).isoformat()
+        #time_log.write(call_time)
+        start_date.close()
+        end_date = datetime.now().replace(microsecond=0).isoformat()
+        self.log('here is the end call time',"info")
+        self.log(end_date, "info")
+        request_edx_url = request_edx_url + '&start_date=' + start_date + '&end_date=' + end_date
         user_data = self.get_api_data(request_edx_url, edx_headers)
         #req_grades_data = user_data['results']
         #self.mapping_api_data(user_data['results'])
@@ -327,4 +333,8 @@ class LdIntegration(object):
             user_data = self.get_api_data(user_data['pagination']['next'], edx_headers)
             self.post_data_ld(consumption_url_ld, ld_headers, self.mapping_api_data(user_data['results']))
             #req_grades_data = req_grades_data + user_data['results']
+        
+        write_time = open('api_call_time.txt','w')
+        write_time.write(end_date)
+
         return user_data
