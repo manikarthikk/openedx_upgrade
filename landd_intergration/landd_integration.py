@@ -253,7 +253,7 @@ class LdIntegration(object):
         return json.dumps(all_course_catalog)
 
 
-    def post_data_ld(self, url, headers, data, time_logging = false):
+    def post_data_ld(self, url, headers, data):
         """
 
         POST data to L&D services
@@ -316,7 +316,7 @@ class LdIntegration(object):
 
     def get_and_post_consumption_data(self, request_edx_url, edx_headers, ld_headers, consumption_url_ld):
         """
-        TODO: l
+        TODO: 
         """
         start_date = open('api_call_time.txt', 'r')
         #time_log = open('api_call_time.txt', 'w')
