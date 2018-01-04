@@ -314,7 +314,7 @@ class LdIntegration(object):
 
     def get_and_post_consumption_data(self, request_edx_url, edx_headers, ld_headers, consumption_url_ld):
         """
-        TODO: 
+        TODO: l
         """
         start_date = open('api_call_time.txt', 'r')
         k = start_date.read()
